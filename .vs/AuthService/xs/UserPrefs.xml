@@ -1,13 +1,22 @@
 ﻿<Properties StartupConfiguration="{C8E5638F-A65D-456B-9615-B539500B1947}|https">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Program.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Controllers/AuthController.cs">
     <Files>
-      <File FileName="Program.cs" Line="21" Column="25" />
+      <File FileName="Program.cs" Line="27" Column="1" />
+      <File FileName="Controllers/WeatherForecastController.cs" Line="26" Column="1" />
+      <File FileName="Models/EmptyClass.cs" Line="2" Column="29" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="AuthService" expanded="True" />
+          <Node name="AuthService" expanded="True">
+            <Node name="AuthService">
+              <Node name="Controllers">
+                <Node name="AuthController.cs" selected="True" />
+              </Node>
+              <Node name="Models" expanded="True" />
+            </Node>
+          </Node>
         </State>
       </Pad>
     </Pads>
