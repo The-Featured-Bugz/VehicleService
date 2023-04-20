@@ -74,11 +74,6 @@ public class AuthController : ControllerBase
             {
                 user = user1;
             }
-
-            //var filter = Builders<User>.Filter.Eq("Username", username) & Builders<User>.Filter.Eq("Password", password);
-            //_logger.LogInformation($"{_users} er i _users");
-            //var user1 = await _users.Find(filter).FirstOrDefaultAsync();
-            //_logger.LogInformation($"user is: {user1}");
         }
         catch(Exception ex)
         {
