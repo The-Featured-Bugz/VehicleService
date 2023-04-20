@@ -2,9 +2,12 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using AuthService.Models;
+using DnsClient;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using MongoDB.Bson;
+using MongoDB.Driver;
 
 namespace AuthService.Controllers;
 
@@ -40,14 +43,46 @@ public class AuthController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginModel login)
+    public async Task<IActionResult> Login([FromBody] User login)
     {
-        if (login.Username != "username" || login.Password != "password")
+        var user = await FindUserByUsernameAndPassword(login.Username, login.Password);
+
+        if (user == null)
         {
             return Unauthorized();
         }
         var token = GenerateJwtToken(login.Username);
         return Ok(new { token });
+    }
+
+    public async Task<User?> FindUserByUsernameAndPassword(string username, string password)
+    {
+        User? user = null;
+        try
+        {
+            var client = new MongoClient("mongodb://MyServiceUser:my_%24ecure_pa%24%24word@localhost:27018/?authSource=admin");
+            var database = client.GetDatabase("userdb"/*Indsæt database navn*/);
+
+            var _users = database.GetCollection<User>("users");
+
+            var user1 = await _users.Find(u => u.Username == username).FirstOrDefaultAsync<User>();
+
+            if (user != null && user.Password == password)
+            {
+                user = user1;
+            }
+
+            //var filter = Builders<User>.Filter.Eq("Username", username) & Builders<User>.Filter.Eq("Password", password);
+            //_logger.LogInformation($"{_users} er i _users");
+            //var user1 = await _users.Find(filter).FirstOrDefaultAsync();
+            //_logger.LogInformation($"user is: {user1}");
+        }
+        catch(Exception ex)
+        {
+            _logger.LogInformation(ex, "Well, bedre held næste gang... scheitze");
+            
+        }
+        return user;
     }
 
     [AllowAnonymous]
